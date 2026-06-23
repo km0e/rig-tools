@@ -1,0 +1,22 @@
+[package]
+name = "rig-tools"
+version = "0.1.0"
+edition = "2024"
+authors = ["rig-tools contributors"]
+description = "Basic filesystem and shell tools for the rig LLM agent framework"
+license = "MIT"
+repository = "https://github.com/example/rig-tools"
+rust-version = "1.85"
+
+[dependencies]
+rig-core = "0.39"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["fs", "process", "time", "io-util"] }
+glob = "0.3"
+regex = "1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt"] }
+tempfile = "3"
