@@ -1,4 +1,4 @@
-use rig_tools::{default_toolset, BashConfig};
+use rig_tools::{BashConfig, default_toolset};
 use std::io::Write;
 use tempfile::TempDir;
 
@@ -47,10 +47,12 @@ async fn bash_tool_runs_in_toolset() {
     let result = toolset.call("bash", args.to_string()).await.unwrap();
     let parsed: serde_json::Value = serde_json::from_str(&result).unwrap();
     assert_eq!(parsed["exit_code"], 0);
-    assert!(parsed["stdout"]
-        .as_str()
-        .unwrap()
-        .contains(dir.path().to_str().unwrap()));
+    assert!(
+        parsed["stdout"]
+            .as_str()
+            .unwrap()
+            .contains(dir.path().to_str().unwrap())
+    );
 }
 
 #[tokio::test]
@@ -67,6 +69,33 @@ async fn glob_tool_lists_files() {
     let parsed: serde_json::Value = serde_json::from_str(&result).unwrap();
     assert_eq!(parsed["matches"].as_array().unwrap().len(), 1);
     assert_eq!(parsed["matches"][0], "a.rs");
+}
+
+#[tokio::test]
+async fn list_directory_tool_lists_recursively() {
+    let dir = TempDir::new().unwrap();
+    std::fs::create_dir_all(dir.path().join("src/fs")).unwrap();
+    std::fs::File::create(dir.path().join("src/lib.rs")).unwrap();
+    std::fs::File::create(dir.path().join("src/fs/mod.rs")).unwrap();
+
+    let toolset = default_toolset(dir.path(), BashConfig::new(dir.path()));
+    let args = serde_json::json!({
+        "path": "src",
+        "recursive": true
+    });
+    let result = toolset
+        .call("list_directory", args.to_string())
+        .await
+        .unwrap();
+    let parsed: serde_json::Value = serde_json::from_str(&result).unwrap();
+    let entries = parsed["entries"].as_array().unwrap();
+    let paths: Vec<&str> = entries
+        .iter()
+        .map(|e| e["path"].as_str().unwrap())
+        .collect();
+    assert!(paths.contains(&"src/lib.rs"));
+    assert!(paths.contains(&"src/fs"));
+    assert!(paths.contains(&"src/fs/mod.rs"));
 }
 
 #[tokio::test]

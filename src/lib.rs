@@ -24,8 +24,9 @@ pub mod fs;
 pub use bash::{BashArgs, BashConfig, BashOutput, BashTool};
 pub use error::ToolsError;
 pub use fs::{
-    EditFileArgs, EditFileOutput, EditFileTool, GlobArgs, GlobOutput, GlobTool, GrepArgs,
-    GrepMatch, GrepOutput, GrepTool, ReadFileArgs, ReadFileOutput, ReadFileTool, WorkingDirectory,
+    DirEntry, EditFileArgs, EditFileOutput, EditFileTool, GlobArgs, GlobOutput, GlobTool, GrepArgs,
+    GrepMatch, GrepOutput, GrepTool, ListDirectoryArgs, ListDirectoryOutput, ListDirectoryTool,
+    ReadFileArgs, ReadFileOutput, ReadFileTool, WorkingDirectory,
 };
 
 use rig_core::tool::ToolSet;
@@ -45,6 +46,7 @@ pub fn default_toolset(
     toolset.add_tool(EditFileTool::new(working_dir.clone()));
     toolset.add_tool(GlobTool::new(working_dir.clone()));
     toolset.add_tool(GrepTool::new(working_dir.clone()));
+    toolset.add_tool(ListDirectoryTool::new(working_dir.clone()));
     toolset.add_tool(BashTool::new(bash_config));
     toolset
 }
@@ -61,6 +63,7 @@ pub fn default_toolset_builder(
         .static_tool(EditFileTool::new(working_dir.clone()))
         .static_tool(GlobTool::new(working_dir.clone()))
         .static_tool(GrepTool::new(working_dir.clone()))
+        .static_tool(ListDirectoryTool::new(working_dir.clone()))
         .static_tool(BashTool::new(bash_config))
 }
 
@@ -78,6 +81,7 @@ mod tests {
         assert!(toolset.contains("edit"));
         assert!(toolset.contains("glob"));
         assert!(toolset.contains("grep"));
+        assert!(toolset.contains("list_directory"));
         assert!(toolset.contains("bash"));
     }
 }

@@ -4,13 +4,14 @@ Basic filesystem and shell tools for the [rig](https://crates.io/crates/rig-core
 
 ## Provided tools
 
-| Tool   | Description |
-|--------|-------------|
-| `read` | Read a text file (with optional line offset / limit). |
-| `edit` | Write, string-replace, insert, or delete files. |
-| `glob` | Find files matching a glob pattern. |
-| `grep` | Search file contents with a regular expression. |
-| `bash` | Execute a shell command. |
+| Tool            | Description |
+|-----------------|-------------|
+| `read`          | Read a text file (with optional line offset / limit). |
+| `edit`          | Write, string-replace, insert, or delete files. |
+| `glob`          | Find files matching a glob pattern. |
+| `grep`          | Search file contents with a regular expression. |
+| `list_directory`| List directory contents, optionally recursively. |
+| `bash`          | Execute a shell command. |
 
 ## Usage
 

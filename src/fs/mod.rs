@@ -7,11 +7,13 @@ use crate::error::ToolsError;
 pub mod edit;
 pub mod glob;
 pub mod grep;
+pub mod list_directory;
 pub mod read;
 
 pub use edit::{EditFileArgs, EditFileOutput, EditFileTool};
 pub use glob::{GlobArgs, GlobOutput, GlobTool};
 pub use grep::{GrepArgs, GrepMatch, GrepOutput, GrepTool};
+pub use list_directory::{DirEntry, ListDirectoryArgs, ListDirectoryOutput, ListDirectoryTool};
 pub use read::{ReadFileArgs, ReadFileOutput, ReadFileTool};
 
 /// A validated working directory. All filesystem tools resolve paths relative to
